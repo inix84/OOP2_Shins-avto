@@ -81,21 +81,11 @@ public class Main {
         System.out.println(BMWZ8);
         System.out.println(KiaSportage4);
         System.out.println(HyundaiAvante);
-        System.out.println(NoName);
-        NoName.changeTyres();
-        System.out.println(NoName);
-        if (NoName.isCorrectRegNumber()) {
-            System.out.println("Номер модели "+
-                    NoName.getBrand()+ " "+
-                    NoName.getModel()+
-                    " задан корректно!");
-        } else {
-            System.out.println("Номер модели "+
-                    NoName.getBrand()+ " "+
-                    NoName.getModel()+
-                    " задан не корректно!");
-        }
+        System.out.println(NoName);//проверка пустой машины
 
+        NoName.changeTyres(); // смена резины, не зависимо от сезона
+        System.out.println(NoName); // проверка смены
+
+        NoName.CorrectRegNumber(); // проверка корректности номера
     }
-
 }

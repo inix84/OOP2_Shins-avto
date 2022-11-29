@@ -182,7 +182,7 @@ public class Car {
     public void changeTyres() {
         summerTyres = !summerTyres;
         }
-    public boolean isCorrectRegNumber() {
+    private boolean isCorrectRegNumber() {
         if (registrationNumber.length()!=9) {
             return  false;
         }
@@ -198,6 +198,20 @@ public class Car {
                                 Character.isDigit(chars[6]) &&
                                         Character.isDigit(chars[7]) &&
                                                 Character.isDigit(chars[8]);
+    }
+    
+    public void CorrectRegNumber () {
+        if (isCorrectRegNumber()) {
+            System.out.println("Номер модели "+
+                    getBrand()+ " "+
+                    getModel()+
+                    " задан корректно!");
+        } else {
+            System.out.println("Номер модели "+
+                    getBrand()+ " "+
+                    getModel()+
+                    " задан не корректно!");
+        }
     }
 }
 
