@@ -1,29 +1,75 @@
 package transport;
+import java.time.LocalDate;
 
 public class Car {
     public static class Key {
-        private final boolean RemoteEngineStart// Удаленный Запуск Двигателя
-        private final boolean KeylessAccess //Бесключевой Доступ
+        private final boolean remoteEngineStart;// Удаленный Запуск Двигателя
+        private final boolean keylessAccess; //Бесключевой Доступ
 
-        public Key(boolean remoteEngineStart, boolean keylessAccess) { // конструктор
-            RemoteEngineStart = remoteEngineStart;
-            KeylessAccess = keylessAccess;
+        public Key (boolean remoteEngineStart, boolean keylessAccess) { // конструктор
+            this.remoteEngineStart = remoteEngineStart;
+            this.keylessAccess = keylessAccess;
+        }
+
+        public Key() { // конструктор c пустыми полями
+            this(false,false);
         }
 
         public boolean isRemoteEngineStart() {
-            return RemoteEngineStart;
+            return remoteEngineStart;
         }
 
         public boolean isKeylessAccess() {
-            return KeylessAccess;
+            return keylessAccess;
         }
     }
 
+    public static class Insurance { // страховка
+    private final LocalDate validityPeriod; //Срок Действия страховки
+    private final double cost;//    Стоимость
+    private final String number;//Номер
 
-    public static class Insurance {
+        public Insurance(LocalDate validityPeriod, double cost, String number) {
+            if (validityPeriod==null) {
+                this.validityPeriod = LocalDate.now().plusDays(365);
+            } else {
+                this.validityPeriod=validityPeriod;
+            }
+
+            this.cost = cost;
+            if (number==null) {
+                this.number="123456789";
+            } else {
+                this.number = number;
+            }
+        }
+        public Insurance() { // дефолтный
+
+            this (null,10_000D,null);
+        }
+        public LocalDate getValidityPeriod() {
+            return validityPeriod;
+        }
+
+        public double getCost() {
+            return cost;
+        }
+
+        public String getNumber() {
+            return number;
+        }
+        public void checkValidityPeriod() {
+            if(validityPeriod.isBefore(LocalDate.now()) || validityPeriod.isEqual(LocalDate.now())) {
+                System.out.println("Оформить новую страховку!!!");
+            }
+        }
+        public void checkNunber () {
+            if (number.length()!=9) {
+                System.out.println("Номер страховки некорректный!");
+            }
+        }
 
     }
-
 
 
     private final String brand; //марка
@@ -39,9 +85,10 @@ public class Car {
     private final int numberOfSeats; //«Количество мест»
     private boolean summerTyres; // летняя резина
 
-    private Key key;
+    private Key key; // данные о ключе
+    private Insurance insurance; // данные о страховке
 
-    Car (String brand,
+    public Car (String brand, // конструтокр нормальный
          String model,
          int productionYear,
          String productionCountry,
@@ -51,7 +98,9 @@ public class Car {
          String bodyType,
          String registrationNumber,
          int numberOfSeats,
-         boolean summerTyres) {
+         boolean summerTyres,
+         Key key,
+         Insurance insurance) {
 
         if (brand!=null && brand.length()!=0) {
             this.brand = brand;
@@ -84,20 +133,61 @@ public class Car {
             this.productionYear =2000 ;
         }
         this.setTransmission(transmission); // на сете условия ввода данных
+
         if (bodyType!=null && bodyType.length()!=0) {
             this.bodyType = bodyType;
         } else {
             this.bodyType = "default";
         }
         this.setRegistrationNumber(registrationNumber); // на сете условия ввода
+
         if (numberOfSeats>0) {
             this.numberOfSeats = numberOfSeats;
         } else {
             this.numberOfSeats = 2;
         }
         this.setSummerTyres (summerTyres); // на сете условия не нуля
+        if (key==null) {
+            this.key = new Key();
+        } else {
+            this.key = key;
+        }
 
+        if (insurance==null) {
+            this.insurance = new Insurance();
+        } else {
+            this.insurance = insurance;
+        }
     }
+
+
+    public Car (String brand, // конструтокр попроще с пустыми полями
+                String model,
+                int productionYear,
+                String productionCountry,
+                String color,
+                double engineVolume,
+                String transmission,
+                String bodyType,
+                String registrationNumber,
+                int numberOfSeats,
+                boolean summerTyres) {
+        this (brand,
+                model,
+        productionYear,
+        productionCountry,
+        color,
+        engineVolume,
+        transmission,
+        bodyType,
+        registrationNumber,
+        numberOfSeats,
+        summerTyres,
+                 new Key (),
+                new Insurance ()
+        );
+    }
+
 
     @Override
     public String toString() {
@@ -112,7 +202,12 @@ public class Car {
                 ", тип кузова=" + getBodyType() +
                 ", рег.номер=" + getRegistrationNumber() +
                 ", количество мест=" + getNumberOfSeats() +
-                ", " + (isSummerTyres() ? "летняя " : "зимняя ") + "резина";
+                ", " + (isSummerTyres() ? "летняя " : "зимняя ") + "резина" +
+                ", " + (getKey().isKeylessAccess() ?  "бесключевой доступ" : "ключевой доступ") +
+                ", " + (getKey().isRemoteEngineStart() ?  "удаленый запуск" : "обычный запуск") +
+                ", номер страховки:" + getInsurance().getNumber()  +
+                ", стоимость страховки:" + getInsurance().getCost()  +
+                ", срок действия страховки:" + getInsurance().getValidityPeriod();
     }
 
     public double getEngineVolume() {
@@ -188,7 +283,13 @@ public class Car {
         return numberOfSeats;
     }
 
+    public Key getKey() {
+        return key;
+    }
 
+    public void setKey(Key key) {
+        this.key = key;
+    }
 
     public void changeTyres() {
         summerTyres = !summerTyres;
@@ -223,6 +324,12 @@ public class Car {
                     getModel()+
                     " задан не корректно!");
         }
+    }
+    public Insurance getInsurance() {
+        return insurance;
+    }
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
     }
 }
 

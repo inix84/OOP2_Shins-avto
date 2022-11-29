@@ -1,6 +1,6 @@
-package transport;
-
 import transport.Car;
+
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +15,10 @@ public class Main {
                 "седан",
                 "а123аа456",
                 4,
-                false);
+                false,
+                new Car.Key(true,true),
+                new Car.Insurance(LocalDate.now(),30000,"666"));
+
         Car AudiA8 = new Car(
                 "Audi",
                 "A8 50 L TDI quattro",
@@ -77,6 +80,10 @@ public class Main {
                 0,
                 true);
         System.out.println(LadaGranta);
+
+        LadaGranta.getInsurance().checkValidityPeriod();
+        LadaGranta.getInsurance().checkNunber();
+
         System.out.println(AudiA8);
         System.out.println(BMWZ8);
         System.out.println(KiaSportage4);
