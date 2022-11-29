@@ -1,6 +1,31 @@
 package transport;
 
 public class Car {
+    public static class Key {
+        private final boolean RemoteEngineStart// Удаленный Запуск Двигателя
+        private final boolean KeylessAccess //Бесключевой Доступ
+
+        public Key(boolean remoteEngineStart, boolean keylessAccess) { // конструктор
+            RemoteEngineStart = remoteEngineStart;
+            KeylessAccess = keylessAccess;
+        }
+
+        public boolean isRemoteEngineStart() {
+            return RemoteEngineStart;
+        }
+
+        public boolean isKeylessAccess() {
+            return KeylessAccess;
+        }
+    }
+
+
+    public static class Insurance {
+
+    }
+
+
+
     private final String brand; //марка
     private final String model; // модель
     private double engineVolume; // обьем двигателя
@@ -14,6 +39,7 @@ public class Car {
     private final int numberOfSeats; //«Количество мест»
     private boolean summerTyres; // летняя резина
 
+    private Key key;
 
     Car (String brand,
          String model,
@@ -89,17 +115,6 @@ public class Car {
                 ", " + (isSummerTyres() ? "летняя " : "зимняя ") + "резина";
     }
 
-   // @Override
-   // public String toString() {
-       // return "Автомобиль " +
-               // this.brand + " "+
-              //  this.model +", "+
-              //  this.productionYear+" года выпуска, сборка - "+
-              //  this.productionCountry+", цвет - "+
-              //  this.color+", объем двигателя — "+
-             //   this.engineVolume;
-   // }
-
     public double getEngineVolume() {
         return engineVolume;
     }
@@ -148,10 +163,6 @@ public class Car {
     public void setSummerTyres(boolean summerTyres) {
         this.summerTyres = summerTyres;
         }
-        //else {
-          //  this.summerTyres = true;
-       // }
-    //}
 
     public String getBrand() {
         return brand;
